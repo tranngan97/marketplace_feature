@@ -1,0 +1,183 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Customer\Block\Form\Register $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+<form class="form create account form-create-account"
+      action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>"
+      method="post"
+      id="form-validate"
+      enctype="multipart/form-data"
+      autocomplete="off">
+    <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
+    <fieldset class="fieldset create info">
+        <legend class="legend"><span><?= $escaper->escapeHtml(__('Personal Information')) ?></span></legend><br>
+        <input type="hidden" name="success_url" value="<?= $escaper->escapeUrl($block->getSuccessUrl()) ?>">
+        <input type="hidden" name="error_url" value="<?= $escaper->escapeUrl($block->getErrorUrl()) ?>">
+        <div class="field field-name-firstname required">
+            <label class="label" for="firstname"><span><?= $block->escapeHtml(__('First Name')) ?></span></label>
+            <div class="control">
+                <input type="text" id="firstname"
+                       name="firstname"
+                       title="<?= $block->escapeHtml(__('First Name')) ?>"
+                       class="input-text" data-validate="{required:true}"'>
+            </div>
+        </div>
+        <div class="field field-name-lastname required">
+            <label class="label" for="lastname"><span><?= $block->escapeHtml(__('Last Name')) ?></span></label>
+            <div class="control">
+                <input type="text" id="lastname"
+                       name="lastname"
+                       title="<?= $block->escapeHtml(__('Last Name')) ?>"
+                       class="input-text" data-validate="{required:true}"'>
+            </div>
+        </div>
+        <div class="field required">
+            <label for="shop_name" class="label"><span><?= $escaper->escapeHtml(__('Shop Name')) ?></span></label>
+            <div class="control">
+                <input type="text"
+                       name="shop_name"
+                       id="shop_name"
+                       title="<?= $escaper->escapeHtmlAttr(__('Shop Name')) ?>"
+                       class="input-text"
+                       data-mage-init='{"mage/trim-input":{}}'
+                       data-validate="{required:true}">
+            </div>
+        </div>
+        <div class="field required">
+            <label for="profile_picture" class="label"><span><?= $escaper->escapeHtml(__('Logo')) ?></span></label>
+            <div class="control">
+                <input type="file" name="profile_picture" id="profile_picture" data-validate="{required:true}">
+            </div>
+        </div>
+        <div class="field required">
+            <label for="description" class="label"><span><?= $escaper->escapeHtml(__('Shop Description')) ?></span></label>
+            <div class="control">
+                <input type="text"
+                       name="description"
+                       id="description"
+                       title="<?= $escaper->escapeHtmlAttr(__('Shop Description')) ?>"
+                       class="input-text"
+                       data-mage-init='{"mage/trim-input":{}}'
+                       data-validate="{required:true}">
+            </div>
+        </div>
+        <div class="field required">
+            <label for="address" class="label"><span><?= $escaper->escapeHtml(__('Shop Address')) ?></span></label>
+            <div class="control">
+                <input type="text"
+                       name="address"
+                       id="address"
+                       title="<?= $escaper->escapeHtmlAttr(__('Shop Address')) ?>"
+                       class="input-text"
+                       data-mage-init='{"mage/trim-input":{}}'
+                       data-validate="{required:true}">
+            </div>
+        </div>
+        <?= $block->getChildHtml('fieldset_create_info_additional') ?>
+    </fieldset>
+    <fieldset class="fieldset create account"
+              data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>">
+        <legend class="legend"><span><?= $escaper->escapeHtml(__('Sign-in Information')) ?></span></legend><br>
+        <div class="field required">
+            <label for="email_address" class="label"><span><?= $escaper->escapeHtml(__('Email')) ?></span></label>
+            <div class="control">
+                <input type="email"
+                       name="email"
+                       autocomplete="email"
+                       id="email_address"
+                       title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
+                       class="input-text"
+                       data-mage-init='{"mage/trim-input":{}}'
+                       data-validate="{required:true, 'validate-email':true}">
+            </div>
+        </div>
+        <div class="field password required">
+            <label for="password" class="label"><span><?= $escaper->escapeHtml(__('Password')) ?></span></label>
+            <div class="control">
+                <input type="password" name="password" id="password"
+                       title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>"
+                       class="input-text"
+                       data-password-min-length="<?=
+                        $escaper->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>"
+                       data-password-min-character-sets="<?=
+                        $escaper->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>"
+                       data-validate="{required:true, 'validate-customer-password':true}"
+                       autocomplete="off">
+                <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
+                    <div id="password-strength-meter" class="password-strength-meter">
+                        <?= $escaper->escapeHtml(__('Password Strength')) ?>:
+                        <span id="password-strength-meter-label" data-role="password-strength-meter-label">
+                            <?= $escaper->escapeHtml(__('No Password')) ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="field confirmation required">
+            <label for="password-confirmation" class="label">
+                <span><?= $escaper->escapeHtml(__('Confirm Password')) ?></span>
+            </label>
+            <div class="control">
+                <input type="password"
+                       name="password_confirmation"
+                       title="<?= $escaper->escapeHtmlAttr(__('Confirm Password')) ?>"
+                       id="password-confirmation"
+                       class="input-text"
+                       data-validate="{required:true, equalTo:'#password'}"
+                       autocomplete="off">
+            </div>
+        </div>
+        <div class="field choice" data-bind="scope: 'showPassword'">
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        </div>
+    </fieldset>
+
+    <fieldset class="fieldset additional_info">
+        <?= $block->getChildHtml('form_additional_info') ?>
+    </fieldset>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit"
+                    class="action submit primary"
+                    title="<?= $escaper->escapeHtmlAttr(__('Create an Account')) ?>">
+                <span><?= $escaper->escapeHtml(__('Create an Account')) ?></span>
+            </button>
+        </div>
+        <div class="secondary">
+            <a class="action back"
+               href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>">
+                <span><?= $escaper->escapeHtml(__('Back')) ?></span>
+            </a>
+        </div>
+    </div>
+</form>
+<script type="text/x-magento-init">
+    {
+        ".field.password": {
+            "passwordStrengthIndicator": {
+                "formSelector": "form.form-create-account"
+            }
+        },
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "form-validate"
+            },
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "showPassword": {
+                        "component": "Magento_Customer/js/show-password",
+                        "passwordSelector": "#password,#password-confirmation"
+                    }
+                }
+            }
+        }
+    }
+</script>
